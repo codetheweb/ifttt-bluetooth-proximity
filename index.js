@@ -24,22 +24,33 @@ function update() {
 function getDevicesNearby(macs) {
 	let len = 0;
 
-	return new Promise((resolve, reject) => {
-		macs.forEach(address => {
-			exec(`hcitool name ${address}`, (err, stdout, stderr) => {
-			  if (err) {
-			  	console.error(err);
-			  	reject(err);
-			  }
-			  if (stdout.length !== 0) {
-			  	console.log(`Found device: ${address}.`);
-			  	len++;
-			  }
+	return new Promise(async (resolve, reject) => {
+	
+		await asyncForEach(macs, address => {
+			return new Promise((resolve, reject) => {
+				exec(`hcitool name ${address}`, (err, stdout, stderr) => {
+				  if (err) {
+				  	console.error(err);
+				  	reject(err);
+				  }
+				  if (stdout.length !== 0) {
+				  	console.log(`Found device: ${address}.`);
+				  	len++;
+				  }
+
+				  resolve();
+				});
 			});
 		});
 
 		resolve(len);
 	});
+}
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
 
 

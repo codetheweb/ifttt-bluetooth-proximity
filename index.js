@@ -23,21 +23,20 @@ function update() {
 
 function getDevicesNearby(macs) {
 	let len = 0;
-
 	return new Promise(async (resolve, reject) => {
-	
+
 		await asyncForEach(macs, address => {
 			return new Promise((resolve, reject) => {
+				console.log(`Looking for ${address}...`);
 				exec(`hcitool name ${address}`, (err, stdout, stderr) => {
 				  if (err) {
 				  	console.error(err);
 				  	reject(err);
 				  }
 				  if (stdout.length !== 0) {
-				  	console.log(`Found device: ${address}.`);
+				  	console.log(`Found ${address}.`);
 				  	len++;
 				  }
-
 				  resolve();
 				});
 			});

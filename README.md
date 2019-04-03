@@ -15,10 +15,10 @@ Environment variables:
 Example run command:
 
 ```shell
-docker run -d \\
---name bluetooth-proximity \\
---privileged \\
---net=host \\
---restart always \\
+docker run -d \
+--name bluetooth-proximity \
+--privileged \
+--net=host \
+--restart always \
 codetheweb/ifttt-bluetooth-proximity
 ```
